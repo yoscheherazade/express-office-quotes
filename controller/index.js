@@ -92,6 +92,43 @@ const quoteController = {
                     });
             }
         });
+    },
+    update(req, res) {
+        const idParam = req.body.id;
+        let quote = req.body;
+        
+        Quote.findOne({_id: idParam}, (err, data) => {
+            if(err) {
+                res.json(err);
+            } else {
+                data.quote = quote.quote;
+                data.author = quote.author;
+                data.season = quote.season;
+                data.episode = quote.episode;
+                data.image = quote.image;
+                
+                data.save((err, updated) => {
+                    if(err) {
+                        res.json(err);
+                    } else {
+                        res.json(updated);
+                    }
+                })
+                
+            }
+        })
+        
+    }, 
+    remove(req, res) {
+        const idParam = req.body.id;
+        
+        Quote.findOne({_id: idParam}).remove((err, removed) => {
+            if(err) {
+                res.json(err);
+            } else {
+                res.json(idParam);
+            }
+        })
     }
 };
 
